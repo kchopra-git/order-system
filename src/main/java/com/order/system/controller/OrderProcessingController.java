@@ -2,6 +2,7 @@ package com.order.system.controller;
 
 import com.order.system.dto.ItemDTO;
 import com.order.system.dto.OrderByItem;
+import com.order.system.dto.OrderDTO;
 import com.order.system.entity.Item;
 import com.order.system.entity.Order;
 import com.order.system.service.OrderProcessingServiceImpl;
@@ -22,24 +23,24 @@ public class OrderProcessingController {
 
 
     @PostMapping(value="/orders", consumes = "application/json")
-    public ResponseEntity<Order> addOrderWithItems(@RequestBody Order order) throws SQLException {
-        Order Order=	orderProcessingService.saveOrderWithItems(order);
-        return new ResponseEntity<>(Order, HttpStatus.OK);
+    public ResponseEntity<OrderDTO> addOrderWithItems(@RequestBody OrderDTO order) throws SQLException {
+        OrderDTO OrderDto=	orderProcessingService.saveOrderWithItems(order);
+        return new ResponseEntity<>(OrderDto, HttpStatus.OK);
     }
     @GetMapping (value="/orders")
-    public ResponseEntity<List<Order>> getOrderWithItems() throws SQLException {
-       List<Order> OrderList=	orderProcessingService.getOrderWithItems();
+    public ResponseEntity<List<OrderDTO>> getOrderWithItems() throws SQLException {
+       List<OrderDTO> OrderList=	orderProcessingService.getOrderWithItems();
         return new ResponseEntity<>(OrderList, HttpStatus.OK);
     }
     @GetMapping (value="/orders/{id}")
-    public ResponseEntity<Order> getOrderWithId(@PathVariable Long id) throws SQLException {
-        Order Order=	orderProcessingService.getOrderWithId(id);
+    public ResponseEntity<OrderDTO> getOrderWithId(@PathVariable Long id) throws SQLException {
+        OrderDTO Order=	orderProcessingService.getOrderWithId(id);
         return new ResponseEntity<>(Order, HttpStatus.OK);
     }
-    @PutMapping (value="/orders/{id}")
-    public ResponseEntity<Order> updateOrderWithItems(@RequestBody Order order ,@PathVariable Long id) throws SQLException {
-        Order Order=	orderProcessingService.updateOrderWithItems(order,id);
-        return new ResponseEntity<>(Order, HttpStatus.OK);
+    @PutMapping (value="/orders/{orderId}/{itemId}")
+    public ResponseEntity<String> updateOrderWithItems(@PathVariable Long orderId ,@PathVariable Long itemId) throws SQLException {
+      String response=	orderProcessingService.updateOrderWithItems(orderId,itemId);
+        return new ResponseEntity<>("String", HttpStatus.OK);
     }
     @DeleteMapping (value="/orders/{id}")
     public ResponseEntity<String> deleteeOrderWithItems(@PathVariable Long id) throws SQLException {
@@ -47,14 +48,14 @@ public class OrderProcessingController {
         return new ResponseEntity<>("Order deleted successfully", HttpStatus.OK);
     }
     @GetMapping (value="/order-items")
-    public ResponseEntity<List<Item>> getAllListOfOrderedItems() throws SQLException {
-        List<Item> itemList=	orderProcessingService.getAllListOfOrderedItems();
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
+    public ResponseEntity<List<ItemDTO>> getAllListOfOrderedItems() throws SQLException {
+        List<ItemDTO> itemListDTO=	orderProcessingService.getAllListOfOrderedItems();
+        return new ResponseEntity<>(itemListDTO, HttpStatus.OK);
     }
     @GetMapping (value="/order-items/{id}")
-    public ResponseEntity<List<Item>> getAllListOfOrderedItemsById(@PathVariable Long id) throws SQLException {
-        List<Item> itemList=	orderProcessingService.getAllListOfOrderedItemsById(id);
-        return new ResponseEntity<>(itemList, HttpStatus.OK);
+    public ResponseEntity<List<ItemDTO>> getAllListOfOrderedItemsById(@PathVariable Long id) throws SQLException {
+        List<ItemDTO> itemListDTO=	orderProcessingService.getAllListOfOrderedItemsById(id);
+        return new ResponseEntity<>(itemListDTO, HttpStatus.OK);
     }
     @PutMapping (value="/order-items/{orderid}")
     public ResponseEntity<ItemDTO> updateExistingOrderItem(@RequestBody Item Item , @PathVariable Long orderid) throws SQLException {

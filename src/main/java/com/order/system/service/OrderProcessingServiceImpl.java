@@ -2,6 +2,7 @@ package com.order.system.service;
 
 import com.order.system.dto.ItemDTO;
 import com.order.system.dto.OrderByItem;
+import com.order.system.dto.OrderDTO;
 import com.order.system.dto.Status;
 import com.order.system.entity.Item;
 import com.order.system.entity.Order;
@@ -26,9 +27,12 @@ public class OrderProcessingServiceImpl implements OrderProcessingService {
     @Autowired
     ItemRepository itemRepository;
 
-    public Order saveOrderWithItems(Order order) {
+    public OrderDTO saveOrderWithItems(OrderDTO orderDTO) {
+        Order order=new Order();
+        BeanUtils.copyProperties(orderDTO,order);
         order.setStatus(statusDefatulValue);
-        return orederRepository.save(order);
+         orederRepository.save(order);
+         return orderDTO;
 
     }
 
@@ -45,30 +49,35 @@ public class OrderProcessingServiceImpl implements OrderProcessingService {
     // BeanUtils.copyProperties(item,itemDTO);
 
 
-    public List<Order> getOrderWithItems() {
-
-        return orederRepository.findAll();
+    public List<OrderDTO> getOrderWithItems() {
+        List<OrderDTO>orderDTOList=new ArrayList<>();
+        List<Order> orderList= orederRepository.findAll();
+        BeanUtils.copyProperties(orderList,orderDTOList);
+        return orderDTOList;
     }
 
-    public Order getOrderWithId(Long id) {
-        return orederRepository.findByOrderId(id);
+    public OrderDTO getOrderWithId(Long id) {
+        OrderDTO orderDTO=new OrderDTO();
+        Order order= orederRepository.findByOrderId(id);
+        BeanUtils.copyProperties(order,orderDTO);
+        return orderDTO;
     }
 
-    public Order updateOrderWithItems(Order order, Long id) {
-        Order o = orederRepository.findByOrderId(id);
+    public String updateOrderWithItems(Long orderId, Long itemId) {
+        Order getExistOrder = orederRepository.findByOrderId(orderId);
         Order orderUpdate = new Order();
-        if (order != null) {
-            o.setOrderId(id);
-            o.setOrderAmount(order.getOrderAmount());
-            o.setOrderDate(order.getOrderDate());
-            o.setCustomerName(order.getCustomerName());
-            o.setCustomerAddress(order.getCustomerAddress());
-            o.setNumberOfItems(order.getNumberOfItems());
+        if (getExistOrder != null) {
+            orderUpdate.setOrderId(orderId);
+            orderUpdate.setOrderAmount(getExistOrder.getOrderAmount());
+            orderUpdate.setOrderDate(getExistOrder.getOrderDate());
+            orderUpdate.setCustomerName(getExistOrder.getCustomerName());
+            orderUpdate.setCustomerAddress(getExistOrder.getCustomerAddress());
+            orderUpdate.setNumberOfItems(getExistOrder.getNumberOfItems());
             //  o.setItemList(order.getItemList());
-            orederRepository.save(o);
-
+            orederRepository.save(orderUpdate);
+            return "Order Updated Successfully";
         }
-        return order;
+        return "Order Not Exist";
     }
 
     public String deleteeOrderWithItems(Long id) {
@@ -76,22 +85,28 @@ public class OrderProcessingServiceImpl implements OrderProcessingService {
         return "Deleted";
     }
 
-    public List<Item> getAllListOfOrderedItems() {
-        return itemRepository.findAll();
+    public List<ItemDTO> getAllListOfOrderedItems()
+    {
+        List<ItemDTO> itemDTOList=new ArrayList<>();
+        List<Item> itemList= itemRepository.findAll();
+        BeanUtils.copyProperties(itemList,itemDTOList);
+        return itemDTOList;
     }
 
-    public List<Item> getAllListOfOrderedItemsById(Long id) {
-        Item item = new Item();
+    public List<ItemDTO> getAllListOfOrderedItemsById(Long id) {
+      //  Item item = new Item();
+        List<ItemDTO>itemDTOList=new ArrayList<>();
         List<Item> itemSet = new ArrayList<>();
         List<Item> itemList = itemRepository.findAll();
-        for (Item it : itemList) {
-            if (it.getItemId().equals(id)) {
+        for (Item item : itemList) {
+            if (item.getItemId().equals(id)) {
 
-                itemSet.add(it);
-                return itemSet;
+                itemSet.add(item);
+               BeanUtils.copyProperties(itemSet,itemDTOList);
+               return itemDTOList;
             }
         }
-        return itemSet;
+        return itemDTOList;
     }
 
 
