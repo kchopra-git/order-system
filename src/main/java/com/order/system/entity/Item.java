@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Setter
-@Getter
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -24,6 +22,55 @@ public class Item  {
     private Long itemId;
     @Column(name="item_name")
     private String itemName;
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public float getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(float itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
+    public Integer getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public void setItemQuantity(Integer itemQuantity) {
+        this.itemQuantity = itemQuantity;
+    }
+
+    public String getShippedDate() {
+        return shippedDate;
+    }
+
+    public void setShippedDate(String shippedDate) {
+        this.shippedDate = shippedDate;
+    }
+
+    public Set<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(Set<Order> order) {
+        this.order = order;
+    }
+
     @Column(name="item_price")
     private float itemPrice;
     @Column(name="item_quantity")

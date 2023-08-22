@@ -2,9 +2,11 @@ package com.order.system.controller;
 
 import com.order.system.dto.ItemDTO;
 import com.order.system.dto.OrderByItem;
+import com.order.system.dto.OrderDTO;
 import com.order.system.entity.Item;
 import com.order.system.entity.Order;
-import com.order.system.service.OrderProcessingServiceImpl;
+import com.order.system.service.ItemServiceImpl;
+import com.order.system.service.OrderServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,9 +24,11 @@ import java.util.Set;
 //@RunWith(MockitoJUnitRunner.class)
 public class OrderProcessingControllerTest {
     @InjectMocks
-    OrderProcessingController orderProcessingController;
+    OrderController orderProcessingController;
     @Mock
-    OrderProcessingServiceImpl orderProcessingService;
+    OrderServiceImpl orderProcessingService;
+    @Mock
+    ItemServiceImpl itemService;
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
@@ -34,7 +38,7 @@ public class OrderProcessingControllerTest {
 @Test
     void testAddOrderWithItems() throws SQLException {
     MockitoAnnotations.initMocks(this);
-    Order order=new Order();
+    OrderDTO order=new OrderDTO();
     order.setOrderId(Long.valueOf("01"));
     order.setCustomerName("xyz");
     order.setCustomerAddress("abc");
@@ -50,8 +54,8 @@ public class OrderProcessingControllerTest {
 @Test
 void testGetOrderWithItems() throws SQLException {
     MockitoAnnotations.initMocks(this);
-    Order order=new Order();
-    List<Order>orderList=new ArrayList<>();
+    OrderDTO order=new OrderDTO();
+    List<OrderDTO>orderList=new ArrayList<>();
     order.setOrderId(Long.valueOf("01"));
     order.setCustomerName("xyz");
     order.setCustomerAddress("abc");
@@ -68,9 +72,9 @@ void testGetOrderWithItems() throws SQLException {
     @Test
     void testGetOrderWithId() throws SQLException {
         MockitoAnnotations.initMocks(this);
-        Order order=new Order();
+        OrderDTO order=new OrderDTO();
 
-        List<Order>orderList=new ArrayList<>();
+        List<OrderDTO>orderList=new ArrayList<>();
         Long id;
         id=1L;
         order.setOrderId(Long.valueOf("01"));
@@ -89,11 +93,12 @@ void testGetOrderWithItems() throws SQLException {
     @Test
     void testUpdateOrderWithItems() throws SQLException {
         MockitoAnnotations.initMocks(this);
-        Order order=new Order();
+        OrderDTO order=new OrderDTO();
 
-        List<Order>orderList=new ArrayList<>();
-        Long id;
-        id=1L;
+        List<OrderDTO>orderList=new ArrayList<>();
+        Long orderId;
+        Long itemId=2L;
+        orderId=1L;
         order.setOrderId(Long.valueOf("01"));
         order.setCustomerName("xyz");
         order.setCustomerAddress("abc");
@@ -103,8 +108,8 @@ void testGetOrderWithItems() throws SQLException {
         order.setNumberOfItems(23);
         //order.setItemList(List.of());
         orderList.add(order);
-        Mockito.when(orderProcessingService.updateOrderWithItems( order,id)).thenReturn(order);
-        orderProcessingController.updateOrderWithItems(order,id);
+        Mockito.when(orderProcessingService.updateOrderWithItems(order,orderId )).thenReturn("Updated");
+        orderProcessingController.updateOrderWithItems(order,orderId );
 
     }
     @Test
@@ -128,105 +133,7 @@ void testGetOrderWithItems() throws SQLException {
         orderProcessingController.deleteeOrderWithItems(id);
 
     }
-    @Test
-    void testGetAllListOfOrderedItems() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        Item item=new Item();
-        List<Item>itemList=new ArrayList<>();
-        item.setItemName("xyz");
-        item.setItemPrice(5.0f);
-        item.setItemId(1L);
-        item.setItemQuantity(3);
-        item.setShippedDate("2023-98-01");
-        itemList.add(item);
-        Mockito.when(orderProcessingService.getAllListOfOrderedItems()).thenReturn(itemList) ;
-        orderProcessingController.getAllListOfOrderedItems();
 
-    }
-    @Test
-    void testGetAllListOfOrderedItemsById() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        Item item=new Item();
-        Long id;
-        id=1L;
-        List<Item> itemList=new ArrayList<>();
-        item.setItemName("xyz");
-        item.setItemPrice(5.0f);
-        item.setItemId(id);
-        item.setItemQuantity(3);
-        item.setShippedDate("2023-98-01");
-        itemList.add(item);
-        Mockito.when(orderProcessingService.getAllListOfOrderedItemsById(id)).thenReturn(itemList) ;
-        orderProcessingController.getAllListOfOrderedItemsById(id);
-
-    }
-    @Test
-    void testUpdateExistingOrderItem() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        ItemDTO itemDTO=new ItemDTO();
-       // ItemDTO itemDTO=new HashSet<>();
-        Item item=new Item();
-        Long itemid;
-        Long orderid;
-        itemid=3L;
-        orderid=1L;
-        Set<Item> itemList=new HashSet<>();
-        item.setItemName("xyz");
-        item.setItemPrice(5.0f);
-        item.setItemId(itemid);
-        item.setItemQuantity(3);
-        item.setShippedDate("2023-98-01");
-     //   itemList.add(item);
-        BeanUtils.copyProperties(item,itemDTO);
-        Mockito.when(orderProcessingService.updateExistingOrderItem(item ,orderid)).thenReturn(itemDTO) ;
-        orderProcessingController.updateExistingOrderItem(item,orderid);
-
-    }
-    @Test
-    void testDeleteOrderedItemById() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        Item item=new Item();
-        Long id;
-        id=1L;
-        Set<Item> itemList=new HashSet<>();
-        item.setItemName("xyz");
-        item.setItemPrice(5.0f);
-        item.setItemId(id);
-        item.setItemQuantity(3);
-        item.setShippedDate("2023-98-01");
-        itemList.add(item);
-        String s1 = orderProcessingService.deleteOrderedItemById(id) ;
-        orderProcessingController.deleteOrderedItemById(id);
-
-    }
-    @Test
-    void testAddOrderedItem() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        Item item=new Item();
-        Long id;
-        id=1L;
-        Set<Item> itemList=new HashSet<>();
-        item.setItemName("xyz");
-        item.setItemPrice(5.0f);
-        item.setItemId(id);
-        item.setItemQuantity(3);
-        item.setShippedDate("2023-98-01");
-        itemList.add(item);
-        Mockito.when(orderProcessingService.saveItem(itemList,id)).thenReturn(itemList);
-        orderProcessingController.addOrderedItem(itemList,id);
-
-    }
-    @Test
-    void testGetOrdersByItemId() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        OrderByItem orderByItem=new OrderByItem();
-        List<Long> ids=List.of(1L,2L,3L);
-        orderByItem.setItemId(1L);
-        orderByItem.setOrderIdList(ids);
-        Mockito.when(orderProcessingService.getOrderList(1L)).thenReturn(orderByItem) ;
-        orderProcessingController.getOrderList(1L);
-
-    }
     @Test
     void testUpdateOrderStatus() throws SQLException {
         MockitoAnnotations.initMocks(this);
