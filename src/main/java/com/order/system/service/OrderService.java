@@ -14,7 +14,7 @@ public interface OrderService {
 
     public List<OrderDTO> getOrderWithItems();
     public OrderDTO getOrderWithId(Long id);
-    public String updateOrderWithItems(Long orderId, Long itemId);
+    public String updateOrderWithItems(OrderDTO orderDTO, Long orderId);
     public String deleteeOrderWithItems(Long id);
 
 

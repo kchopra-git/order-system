@@ -36,8 +36,8 @@ public class ItemController {
         return new ResponseEntity<>(itemListDTO, HttpStatus.OK);
     }
     @PutMapping (value="/order-items/{itemId}/{orderid}")
-    public ResponseEntity<ItemDTO> updateExistingOrderItem( @PathVariable Long itemId , @PathVariable Long orderid) throws SQLException {
-        ItemDTO item=	itemServiceImpl.updateExistingOrderItem(itemId,orderid);
+    public ResponseEntity<ItemDTO> updateExistingOrderItem( @RequestBody ItemDTO itemDTO , @PathVariable Long orderid) throws SQLException {
+        ItemDTO item=	itemServiceImpl.updateExistingOrderItem(itemDTO,orderid);
         return new ResponseEntity<>(item, HttpStatus.OK);
     }
     @DeleteMapping (value="/order-items/{id}")
@@ -55,15 +55,9 @@ public class ItemController {
     @GetMapping("/orders-by-item/{itemId}")
     public OrderByItem getOrderList(@PathVariable Long itemId) {
         //return orderProcessingService.findOrdersByItemId(itemId);
-        OrderByItem orderByItem=orderProcessingService.getOrderList(itemId);
+        OrderByItem orderByItem=itemServiceImpl.getOrderList(itemId);
         return orderByItem;
     }
 
-    @PutMapping("/{orderId}/{status}")
-    public ResponseEntity<String> updateOrderStatus(
-            @PathVariable Long orderId,
-            @PathVariable String status) {
-        orderProcessingService.updateOrderStatus(orderId, status);
-        return ResponseEntity.ok("Order status updated");
-    }
+
 }

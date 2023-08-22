@@ -12,7 +12,7 @@ public interface ItemService {
     public Set<ItemDTO> saveItem(Set<ItemDTO> itemDTO, Long id);
     public List<ItemDTO> getAllListOfOrderedItems();
     public List<ItemDTO> getAllListOfOrderedItemsById(Long id);
-    public ItemDTO updateExistingOrderItem(Long itemId, Long orderId) throws SQLException;
+    public ItemDTO updateExistingOrderItem(ItemDTO itemDTO, Long orderId) throws SQLException;
     public String deleteOrderedItemById(Long id);
     public OrderByItem getOrderList(Long itemId);
 }

@@ -78,15 +78,15 @@ public class ItemControllerTest {
         Long orderId=1L;
 
         Set<Item> itemList=new HashSet<>();
-        item.setItemName("xyz");
-        item.setItemPrice(5.0f);
-        item.setItemId(itemId);
-        item.setItemQuantity(3);
-        item.setShippedDate("2023-98-01");
+        itemDTO.setItemName("xyz");
+        itemDTO.setItemPrice(5.0f);
+        itemDTO.setItemId(itemId);
+        itemDTO.setItemQuantity(3);
+        itemDTO.setShippedDate("2023-98-01");
         //   itemList.add(item);
         BeanUtils.copyProperties(item,itemDTO);
-        Mockito.when(itemService.updateExistingOrderItem(itemId ,orderId)).thenReturn(itemDTO) ;
-        itemController.updateExistingOrderItem(itemId ,orderId);
+        Mockito.when(itemService.updateExistingOrderItem(itemDTO ,orderId)).thenReturn(itemDTO) ;
+        itemController.updateExistingOrderItem(itemDTO ,orderId);
 
     }
     @Test
@@ -130,7 +130,7 @@ public class ItemControllerTest {
         List<Long> ids=List.of(1L,2L,3L);
         orderByItem.setItemId(1L);
         orderByItem.setOrderIdList(ids);
-        Mockito.when(orderProcessingService.getOrderList(1L)).thenReturn(orderByItem) ;
+        Mockito.when(itemService.getOrderList(1L)).thenReturn(orderByItem) ;
         itemController.getOrderList(1L);
 
     }

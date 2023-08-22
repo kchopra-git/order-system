@@ -105,22 +105,22 @@ public class OrderProcessingServiceTest {
     void testUpdateOrderWithItems() throws SQLException {
         MockitoAnnotations.initMocks(this);
         Order order=new Order();
-
+        OrderDTO orderDTO=new OrderDTO();
         List<Order>orderList=new ArrayList<>();
         Long orderId=1L;
         Long itemId=2L;
-        order.setOrderId(orderId);
-        order.setCustomerName("xyz");
-        order.setCustomerAddress("abc");
+        orderDTO.setOrderId(orderId);
+        orderDTO.setCustomerName("xyz");
+        orderDTO.setCustomerAddress("abc");
         // order.setOrderDate(LocalDate)"123445");
-        order.setDispatchDate("4566666");
-        order.setOrderAmount(666);
-        order.setNumberOfItems(23);
+        orderDTO.setDispatchDate("4566666");
+        orderDTO.setOrderAmount(666);
+        orderDTO.setNumberOfItems(23);
         // order.setItemList(List.of());
         orderList.add(order);
         when(orederRepository.findByOrderId(orderId)).thenReturn(order);
         when(orederRepository.save(order)).thenReturn(order);
-        orderProcessingService.updateOrderWithItems(itemId,orderId);
+        orderProcessingService.updateOrderWithItems(orderDTO,orderId);
         // Assert.assertNotNull(order);
 
     }
@@ -128,14 +128,15 @@ public class OrderProcessingServiceTest {
     void testUpdateOrderWithItemsNull() throws SQLException {
         MockitoAnnotations.initMocks(this);
         Order order=new Order();
+        OrderDTO orderDTO=new OrderDTO();
         order=null;
         List<Order>orderList=new ArrayList<>();
         Long orderId=1L;
         Long itemId=2L;
-
+         orderDTO.setOrderId(orderId);
         orderList.add(order);
         when(orederRepository.save( order)).thenReturn(null);
-        orderProcessingService.updateOrderWithItems(itemId,orderId);
+        orderProcessingService.updateOrderWithItems(orderDTO,orderId);
 
     }
     @Test
@@ -170,7 +171,7 @@ public class OrderProcessingServiceTest {
         orderByItem.setItemId(id);
         orderByItem.setOrderIdList(ids);
         when(orederRepository.findOrdersByItemId(id)).thenReturn(ids) ;
-        orderProcessingService.getOrderList(id);
+        orderProcessingService.getOrderWithId(id);
 
     }
     @Test

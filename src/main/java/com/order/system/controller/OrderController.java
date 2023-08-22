@@ -19,8 +19,8 @@ public class OrderController {
 
     @PostMapping(value="/orders", consumes = "application/json")
     public ResponseEntity<OrderDTO> addOrderWithItems(@RequestBody OrderDTO order) throws SQLException {
-        OrderDTO OrderDto=	orderProcessingService.saveOrderWithItems(order);
-        return new ResponseEntity<>(OrderDto, HttpStatus.OK);
+        OrderDTO orderDto=	orderProcessingService.saveOrderWithItems(order);
+        return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
     @GetMapping (value="/orders")
     public ResponseEntity<List<OrderDTO>> getOrderWithItems() throws SQLException {
@@ -32,10 +32,13 @@ public class OrderController {
         OrderDTO Order=	orderProcessingService.getOrderWithId(id);
         return new ResponseEntity<>(Order, HttpStatus.OK);
     }
-    @PutMapping (value="/orders/{orderId}/{itemId}")
-    public ResponseEntity<String> updateOrderWithItems(@PathVariable Long orderId ,@PathVariable Long itemId) throws SQLException {
-      String response=	orderProcessingService.updateOrderWithItems(orderId,itemId);
-        return new ResponseEntity<>("String", HttpStatus.OK);
+    @PutMapping (value="/orders/{orderId}")
+    public ResponseEntity<String> updateOrderWithItems(@RequestBody OrderDTO orderDTO, @PathVariable Long orderId ) throws SQLException {
+      String response=	orderProcessingService.updateOrderWithItems(orderDTO,orderId);
+      if(response=="Order Updated Successfully"){
+          return new ResponseEntity<>("Order Updated Successfully", HttpStatus.OK);
+      }
+        return new ResponseEntity<>("Order NOt Exist", HttpStatus.NOT_FOUND);
     }
     @DeleteMapping (value="/orders/{id}")
     public ResponseEntity<String> deleteeOrderWithItems(@PathVariable Long id) throws SQLException {

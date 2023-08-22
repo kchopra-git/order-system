@@ -1,5 +1,6 @@
 package com.order.system.dto;
 
+import com.order.system.entity.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.Set;
+
 @Data
 public class OrderDTO {
 
@@ -20,5 +23,6 @@ public class OrderDTO {
     private float orderAmount;
     private Integer numberOfItems;
     private Status status;
+    private Set<Item> itemList ;
 
 }

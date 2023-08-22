@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +39,24 @@ public class OrderServiceImpl implements OrderService {
 
     public List<OrderDTO> getOrderWithItems() {
         List<OrderDTO>orderDTOList=new ArrayList<>();
+
         List<Order> orderList= orederRepository.findAll();
+        for(Order order:orderList){
+            OrderDTO orderDTO=new OrderDTO();
+            orderDTO.setOrderId(order.getOrderId());
+            orderDTO.setOrderAmount(order.getOrderAmount());
+            orderDTO.setOrderDate(order.getOrderDate());
+            orderDTO.setItemList(order.getItemList());
+            orderDTO.setCustomerId(orderDTO.getCustomerId());
+            orderDTO.setStatus(order.getStatus());
+            orderDTO.setCustomerAddress(order.getCustomerAddress());
+            orderDTO.setDispatchDate(order.getDispatchDate());
+            orderDTO.setCustomerName(order.getCustomerName());
+            orderDTO.setNumberOfItems(order.getNumberOfItems());
+            orderDTOList.add(orderDTO);
+
+        }
+
         BeanUtils.copyProperties(orderList,orderDTOList);
         return orderDTOList;
     }
@@ -50,20 +68,29 @@ public class OrderServiceImpl implements OrderService {
         return orderDTO;
     }
 
-    public String updateOrderWithItems(Long orderId, Long itemId) {
+    public String updateOrderWithItems(OrderDTO orderDTO,Long orderId) {
         Order getExistOrder = orederRepository.findByOrderId(orderId);
         Order orderUpdate = new Order();
         if (getExistOrder != null) {
             orderUpdate.setOrderId(orderId);
-            orderUpdate.setOrderAmount(getExistOrder.getOrderAmount());
-            orderUpdate.setOrderDate(getExistOrder.getOrderDate());
-            orderUpdate.setCustomerName(getExistOrder.getCustomerName());
-            orderUpdate.setCustomerAddress(getExistOrder.getCustomerAddress());
-            orderUpdate.setNumberOfItems(getExistOrder.getNumberOfItems());
-            //  o.setItemList(order.getItemList());
+            orderUpdate.setOrderAmount(orderDTO.getOrderAmount());
+            orderUpdate.setOrderDate(orderDTO.getOrderDate());
+            orderUpdate.setCustomerName(orderDTO.getCustomerName());
+            orderUpdate.setCustomerAddress(orderDTO.getCustomerAddress());
+            orderUpdate.setNumberOfItems(orderDTO.getNumberOfItems());
+            orderUpdate.setStatus(orderDTO.getStatus());
+            orderUpdate.setDispatchDate(orderDTO.getDispatchDate());
+            orderUpdate.setCustomerId(orderDTO.getCustomerId());
+
             orederRepository.save(orderUpdate);
             return "Order Updated Successfully";
-        }
+
+            }
+
+            //  o.setItemList(order.getItemList());
+           // orederRepository.save(orderUpdate);
+
+
         return "Order Not Exist";
     }
 
@@ -72,10 +99,7 @@ public class OrderServiceImpl implements OrderService {
         return "Deleted";
     }
 
-    @Override
-    public OrderByItem getOrderList(Long itemId) {
-        return null;
-    }
+
 
 
     public String updateOrderStatus(Long orderId, String newStatus) {

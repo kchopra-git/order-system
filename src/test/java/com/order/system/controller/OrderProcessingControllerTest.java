@@ -108,8 +108,8 @@ void testGetOrderWithItems() throws SQLException {
         order.setNumberOfItems(23);
         //order.setItemList(List.of());
         orderList.add(order);
-        Mockito.when(orderProcessingService.updateOrderWithItems(orderId ,itemId)).thenReturn("Updated");
-        orderProcessingController.updateOrderWithItems(orderId ,itemId);
+        Mockito.when(orderProcessingService.updateOrderWithItems(order,orderId )).thenReturn("Updated");
+        orderProcessingController.updateOrderWithItems(order,orderId );
 
     }
     @Test
