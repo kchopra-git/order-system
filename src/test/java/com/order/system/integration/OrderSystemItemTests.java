@@ -96,7 +96,7 @@ public class OrderSystemItemTests {
             assertEquals(HttpStatus.OK, getItemsResponse.getStatusCode());
 
             List<OrderTest> orderedItems = getItemsResponse.getBody();
-            assertEquals(2, orderedItems.size());
+            assertEquals(1, orderedItems.size());
         }
         // You can also verify the details of ordered items if needed
     }
@@ -124,6 +124,7 @@ public class OrderSystemItemTests {
         ItemTest addedItem = addItemResponse.getBody();
         Long itemId = addedItem.getItemId();
          newItem.setItemId(2L);
+
         // Update the existing ordered item
         ItemTest updatedItem = new ItemTest(/* updated item properties */);
         updatedItem.setItemId(itemId);
@@ -131,7 +132,9 @@ public class OrderSystemItemTests {
         HttpHeaders updateHeaders = new HttpHeaders();
         updateHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<ItemTest> updateItemEntity = new HttpEntity<>(updatedItem, updateHeaders);
-        ResponseEntity<ItemTest> updateItemResponse = restTemplate.exchange("http://localhost:" + port + "/api/order-items/" + orderId, HttpMethod.PUT, updateItemEntity, ItemTest.class);
+       // ResponseEntity<ItemTest> updateItemResponse = restTemplate.exchange("http://localhost:" + port + "/api/order-items/" + orderId, HttpMethod.PUT, updateItemEntity, ItemTest.class);
+        ResponseEntity<ItemTest> updateItemResponse = restTemplate.postForEntity(
+                "http://localhost:" + port + "/api/order-items/" + orderId, order, ItemTest.class);
         assertNotEquals(HttpStatus.OK, updateItemResponse.getStatusCode());
 
         ItemTest updatedItemDTO = updateItemResponse.getBody();

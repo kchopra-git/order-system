@@ -100,7 +100,7 @@ public class ItemServiceImpl implements ItemService {
             //  Order orderWithItemList = getOrderWithId(orderid);
             Set<Item> itemList = order.getItemList().stream().collect(Collectors.toSet());
             Set<Long> itemIdList = itemList.stream().map(x -> x.getItemId()).collect(Collectors.toSet());
-
+               if(itemList!=null){
             for (Item it : itemList) {
                 if (newItem.getItemId().equals(it.getItemId())) {
 
@@ -121,7 +121,7 @@ public class ItemServiceImpl implements ItemService {
                 }
             }
 
-        }
+        }}
         return itemDTO;
     }
     @Override
