@@ -35,7 +35,7 @@ public class ItemController {
         List<ItemDTO> itemListDTO=	itemServiceImpl.getAllListOfOrderedItemsById(id);
         return new ResponseEntity<>(itemListDTO, HttpStatus.OK);
     }
-    @PutMapping (value="/order-items/{itemId}/{orderid}")
+    @PutMapping (value="/order-items/{orderid}")
     public ResponseEntity<ItemDTO> updateExistingOrderItem( @RequestBody ItemDTO itemDTO , @PathVariable Long orderid) throws SQLException {
         ItemDTO item=	itemServiceImpl.updateExistingOrderItem(itemDTO,orderid);
         return new ResponseEntity<>(item, HttpStatus.OK);

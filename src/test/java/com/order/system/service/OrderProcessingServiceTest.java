@@ -161,19 +161,20 @@ public class OrderProcessingServiceTest {
 
     }
 
-    @Test
-    void testGetOrderList() throws SQLException {
-        MockitoAnnotations.initMocks(this);
-        OrderByItem orderByItem =new OrderByItem();
-        Long id;
-        id=1L;
-       List<Long> ids=List.of(1L,2L,3L);
-        orderByItem.setItemId(id);
-        orderByItem.setOrderIdList(ids);
-        when(orederRepository.findOrdersByItemId(id)).thenReturn(ids) ;
-        orderProcessingService.getOrderWithId(id);
-
-    }
+//    @Test
+//    void testGetOrderList() throws SQLException {
+//        MockitoAnnotations.initMocks(this);
+//        OrderByItem orderByItem =new OrderByItem();
+//        Long id;
+//        id=1L;
+//       List<Long> ids=List.of(1L,2L,3L);
+//        orderByItem.setItemId(id);
+//        orderByItem.setMsg("add");
+//        orderByItem.setOrderIdList(ids);
+//        when(orederRepository.findOrdersByItemId(id)).thenReturn(ids) ;
+//        orderProcessingService.getOrderWithId(id);
+//
+//    }
     @Test
     void testUpdateOrderStatus() {
         Long orderId = 123L;

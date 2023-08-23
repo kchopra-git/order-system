@@ -26,9 +26,14 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderDTO saveOrderWithItems(OrderDTO orderDTO) {
         Order order=new Order();
+      //  order.setStatus(statusDefatulValue);
+
+        orderDTO.setStatus(statusDefatulValue);
+        order.setItemList(orderDTO.getItemList());
         BeanUtils.copyProperties(orderDTO,order);
-        order.setStatus(statusDefatulValue);
          orederRepository.save(order);
+        orderDTO.setOrderId(order.getOrderId());
+        BeanUtils.copyProperties(orderDTO,order);
          return orderDTO;
 
     }

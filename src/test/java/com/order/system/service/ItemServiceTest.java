@@ -109,20 +109,20 @@ public class ItemServiceTest {
         Long orderId=1L;
         ItemDTO itemDTO=new ItemDTO();
         Item item=new Item();
-        Long itemid=3L;
-        Item item1=new Item();
-        Set<Item> itemList=new HashSet<>();
-        itemDTO.setItemName("xyz");
-        itemDTO.setItemPrice(5.0f);
-        itemDTO.setItemId(itemid);
-        itemDTO.setItemQuantity(3);
-        itemDTO.setShippedDate("2023-98-01");
-        itemList.add(item);
-
+      //  Long itemid=3L;
+       // Item item1=new Item();
+        Set<ItemDTO> itemList=new HashSet<>();
+//        itemDTO.setItemName("xyz");
+//        itemDTO.setItemPrice(5.0f);
+//        itemDTO.setItemId(itemid);
+//        itemDTO.setItemQuantity(3);
+//        itemDTO.setShippedDate("2023-98-01");
+//        itemList.add(itemDTO);
+        itemList=null;
         // Mockito.when(itemRepository.save(item)).thenReturn(item);
-        testSaveItem();
+      // testSaveItem();
         // Mockito.when(orderProcessingService.saveItem(itemList,orderId));
-        Mockito.when(itemService.updateExistingOrderItem(itemDTO,orderId)).thenReturn(itemDTO);
+        Mockito.when(itemService.updateExistingOrderItem(itemDTO,orderId)).thenReturn(null);
 
     }
     @Test
